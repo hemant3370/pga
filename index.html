@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puzzle Games Arena</title>
+<meta name="description" content="Seven calm, clever puzzle games for iPhone and iPad. Play free every day, or unlock everything once with Pro Lifetime. No subscriptions.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
+<meta property="og:title" content="Puzzle Games Arena">
+<meta property="og:description" content="Seven calm, clever puzzle games for iPhone and iPad. One purchase, no subscriptions.">
+<meta property="og:image" content="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF6F1;
+    --bg-soft: #F4ECE4;
+    --surface: #FFFFFF;
+    --border: #EADFD5;
+    --text: #1F1A24;
+    --muted: #625A6B;
+    --accent: #D9434A;
+    --accent-soft: #FFE3E1;
+    --on-accent: #FFFFFF;
+    --shadow: 0 10px 30px rgba(70, 40, 30, 0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15121A;
+      --bg-soft: #1C1823;
+      --surface: #211C29;
+      --border: #332C3D;
+      --text: #F5F1F8;
+      --muted: #B4ABBE;
+      --accent: #FF7A7D;
+      --accent-soft: #3A2128;
+      --on-accent: #1F1A24;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 640px) { .wrap { padding: 0 32px; } }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 16px; top: 16px; background: var(--surface); padding: 8px 12px; border-radius: 8px; z-index: 10; }
+
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 600; letter-spacing: -0.01em; line-height: 1.1; margin: 0; }
+  em { font-style: italic; font-weight: 500; color: var(--accent); }
+
+  /* Header */
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 650; }
+  .brand img { width: 40px; height: 40px; border-radius: 10px; }
+  nav.links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+  nav.links a { text-decoration: none; }
+  nav.links a:hover { color: var(--text); }
+  nav.links span { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 4px; }
+  @media (max-width: 640px) { nav.links { display: none; } }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; padding: 32px 0 56px; }
+  @media (min-width: 820px) { .hero { grid-template-columns: 1.15fr 0.85fr; padding: 56px 0 88px; } }
+  .eyebrow { display: inline-block; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+  .eyebrow b { color: var(--accent); font-weight: 600; }
+  .hero h1 { font-size: clamp(40px, 8vw, 68px); }
+  .hero p.lede { font-size: 19px; color: var(--muted); max-width: 34ch; margin: 22px 0 28px; }
+  .hero-art { position: relative; justify-self: center; width: min(100%, 380px); aspect-ratio: 1; }
+  .hero-art::before { content: ""; position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle at 50% 45%, var(--accent-soft), transparent 70%); }
+  .hero-art img { position: relative; width: 100%; height: 100%; object-fit: contain; }
+  .stats { display: flex; flex-wrap: wrap; gap: 28px; margin: 0; padding: 0; list-style: none; }
+  .stats strong { display: block; font-family: "Fraunces", Georgia, serif; font-size: 28px; font-weight: 600; }
+  .stats span { font-size: 14px; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+  .chip { font-size: 14px; padding: 6px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+
+  /* Sections */
+  section { padding: 64px 0; border-top: 1px solid var(--border); }
+  .section-head { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; max-width: 46ch; }
+  .section-head .num { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .section-head h2 { font-size: clamp(30px, 5vw, 42px); }
+  .section-head p { margin: 0; color: var(--muted); }
+
+  /* Games */
+  .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px; list-style: none; margin: 0; padding: 0; }
+  .game { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 22px; box-shadow: var(--shadow); display: flex; gap: 16px; align-items: flex-start; }
+  .game .dot { flex: none; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--c); color: #fff; font: 600 18px/1 "Fraunces", Georgia, serif; }
+  .game h3 { font-size: 20px; margin-bottom: 4px; }
+  .game p { margin: 0; color: var(--muted); font-size: 15px; }
+  .game .tag { display: inline-block; margin-top: 10px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* Features */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 28px 32px; }
+  .feature h3 { font-size: 20px; margin-bottom: 6px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* Pro */
+  .pro { display: grid; grid-template-columns: 1fr; gap: 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 28px; padding: 32px 24px; box-shadow: var(--shadow); }
+  @media (min-width: 820px) { .pro { grid-template-columns: 1fr 1fr; padding: 48px; align-items: center; } }
+  .pro h2 { font-size: clamp(30px, 5vw, 42px); margin: 10px 0 14px; }
+  .pro p { margin: 0; color: var(--muted); }
+  .pro ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .pro li { display: flex; gap: 12px; align-items: baseline; }
+  .pro li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+  .pill { display: inline-block; background: var(--accent); color: var(--on-accent); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 999px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0 56px; color: var(--muted); font-size: 14px; }
+  footer .row { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--text); text-decoration: underline; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; font-weight: 600; text-decoration: none; border: 1px solid var(--border); background: var(--surface); }
+  .btn.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+  .btn:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#games">Skip to content</a>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="img/icon.png" alt="" width="40" height="40">Puzzle Games Arena</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#games"><span>01</span>Games</a>
+      <a href="#play"><span>02</span>How it plays</a>
+      <a href="#pro"><span>03</span>Pro</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <span class="eyebrow"><b>New</b> &middot; iPhone &amp; iPad</span>
+        <h1>Seven quiet puzzles.<br><em>One sharp mind.</em></h1>
+        <p class="lede">Number grids, sums, sliding tiles, memory and an old strategy board, gathered in one calm app. A fresh board every round, no account needed.</p>
+        <div class="chips">
+          <span class="chip">Easy, Medium, Hard</span>
+          <span class="chip">Practice boards</span>
+          <span class="chip">No subscriptions</span>
+        </div>
+        <ul class="stats">
+          <li><strong>7</strong><span>games</span></li>
+          <li><strong>3</strong><span>difficulties each</span></li>
+          <li><strong>1</strong><span>purchase, ever</span></li>
+        </ul>
+      </div>
+      <div class="hero-art">
+        <img src="img/pip.png" alt="The Puzzle Games Arena red panda mascot, waving" width="640" height="640">
+      </div>
+    </div>
+
+    <section id="games">
+      <div class="section-head">
+        <span class="num">01 / Games</span>
+        <h2>Pick a puzzle, <em>any puzzle.</em></h2>
+        <p>Logic, numbers and memory. Every round deals a freshly generated board.</p>
+      </div>
+      <ul class="games">
+        <li class="game" style="--c:#3E7CB1"><span class="dot" aria-hidden="true">9</span><div><h3>Number Place</h3><p>Fill the grid so no digit repeats in any row, column or box.</p><span class="tag">Logic</span></div></li>
+        <li class="game" style="--c:#2E9E6A"><span class="dot" aria-hidden="true">=</span><div><h3>Target Number</h3><p>Combine the numbers you're given to hit the target exactly.</p><span class="tag">Maths</span></div></li>
+        <li class="game" style="--c:#C4602A"><span class="dot" aria-hidden="true">⇄</span><div><h3>Sliding Tiles</h3><p>Slide the numbered tiles back into order, one move at a time.</p><span class="tag">Logic</span></div></li>
+        <li class="game" style="--c:#8E5BC4"><span class="dot" aria-hidden="true">◇</span><div><h3>Memory Pairs</h3><p>Turn the cards and find every matching pair.</p><span class="tag">Memory</span></div></li>
+        <li class="game" style="--c:#D2486E"><span class="dot" aria-hidden="true">✦</span><div><h3>Flash Recall</h3><p>See it for a moment, then remember what was there.</p><span class="tag">Memory</span></div></li>
+        <li class="game" style="--c:#B26A17"><span class="dot" aria-hidden="true">?</span><div><h3>Number Sleuth</h3><p>Find the missing number or sign that makes the sum true.</p><span class="tag">Maths</span></div></li>
+        <li class="game" style="--c:#9C6212"><span class="dot" aria-hidden="true">▲</span><div><h3>Tigers vs Goats</h3><p>An old board game of hunt and trap: trap the tigers, or eat five goats.</p><span class="tag">Strategy</span></div></li>
+      </ul>
+    </section>
+
+    <section id="play">
+      <div class="section-head">
+        <span class="num">02 / How it plays</span>
+        <h2>Made for a few <em>good minutes.</em></h2>
+      </div>
+      <div class="features">
+        <div class="feature"><h3>Your pace</h3><p>Choose Easy, Medium or Hard for every game, and step up when you're ready.</p></div>
+        <div class="feature"><h3>Learn by doing</h3><p>Each game has a Practice board that walks you through the rules before you play.</p></div>
+        <div class="feature"><h3>Keep a streak</h3><p>Play any day to keep your day streak going. Pause a round and pick it up later.</p></div>
+        <div class="feature"><h3>No account</h3><p>Start playing straight away. Sign in with Apple only if you want your Pro purchase and hints on another device.</p></div>
+      </div>
+    </section>
+
+    <section id="pro">
+      <div class="pro">
+        <div>
+          <span class="pill">Pro Lifetime</span>
+          <h2>Buy once. <em>Keep it.</em></h2>
+          <p>Every game is free to play every day. If you'd like more, Pro Lifetime is a single in-app purchase. There are no subscriptions and nothing renews.</p>
+        </div>
+        <ul>
+          <li>Unlimited plays in every game</li>
+          <li>No ads</li>
+          <li>Free hints</li>
+          <li>One payment, yours for good</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap row">
+    <span>&copy; 2026 Hemant Singh &middot; Puzzle Games Arena</span>
+    <nav aria-label="Footer">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="mailto:hrajput4@gmail.com?subject=Puzzle%20Games%20Arena">Contact</a>
+      <a href="https://hemant3370.github.io/">More apps</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
